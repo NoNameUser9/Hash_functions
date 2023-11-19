@@ -39,9 +39,9 @@ class HashTable
         bool state;
         Node(const T& value_) : value(value_), state(true) {}
     };
-    int buffer_size;
     Node** arr;
     int size;
+    int buffer_size;
     int size_all_non_nullptr;
 
     void Resize()
@@ -85,9 +85,12 @@ class HashTable
     }
 
 public:
-    HashTable() : buffer_size(default_size), arr(new Node*[buffer_size]), size(0), size_all_non_nullptr(0)
+    HashTable()
     {
-        // arr = new Node*[buffer_size];
+        buffer_size = default_size;
+        size = 0;
+        size_all_non_nullptr = 0;
+        arr = new Node*[buffer_size];
         for (int i = 0; i < buffer_size; ++i)
             arr[i] = nullptr;
     }
@@ -96,7 +99,6 @@ public:
         for (int i = 0; i < buffer_size; ++i)
             if (arr[i])
                 delete arr[i];
-        
         delete[] arr;
     }
     bool Add(const T& value, const THash1& hash1 = THash1(),const THash2& hash2 = THash2())
