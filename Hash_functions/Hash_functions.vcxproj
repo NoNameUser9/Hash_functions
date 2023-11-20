@@ -93,9 +93,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="hash_table.cpp" />
+    <ClCompile Include="my_ht.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hash_table.h" />
+    <ClInclude Include="my_ht.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

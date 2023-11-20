@@ -1,39 +1,43 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <iostream>
+// #define _CRT_SECURE_NO_WARNINGS
+// #include <iostream>
 #include <time.h>
-#include <cstring>
+// #include <cstring>
+// #include <unordered_map>
+
+#include <iostream>
 #include <unordered_map>
 
-// #include "hash_table.h"
-
+#include "hash_table.h"
+//
 using namespace std;
 //
-// size_t HashFunctionHorner(const std::string& s, const size_t table_size, const size_t key)
-// {
-//     size_t hash_result = 0;
-//     for (size_t i = 0; s[i] != s.size(); ++i)
-//     {
-//         hash_result = (key * hash_result + s[i]) % table_size;
-//     }
-//     hash_result = (hash_result * 2 + 1) % table_size;
-//     return hash_result;
-// }
+// // size_t HashFunctionHorner(const std::string& s, const size_t table_size, const size_t key)
+// // {
+// //     size_t hash_result = 0;
+// //     for (size_t i = 0; s[i] != s.size(); ++i)
+// //     {
+// //         hash_result = (key * hash_result + s[i]) % table_size;
+// //     }
+// //     hash_result = (hash_result * 2 + 1) % table_size;
+// //     return hash_result;
+// // }
+// //
+// // struct HashFunction1 
+// // {
+// //     int operator()(const std::string& s, const size_t table_size) const
+// //     {
+// //         return HashFunctionHorner(s, table_size, table_size - 1);
+// //     }
+// // };
+// //
+// // struct HashFunction2 
+// // {
+// //     int operator()(const std::string& s, const size_t table_size) const
+// //     {
+// //         return HashFunctionHorner(s, table_size, table_size + 1);
+// //     }
+// // };
 //
-// struct HashFunction1 
-// {
-//     int operator()(const std::string& s, const size_t table_size) const
-//     {
-//         return HashFunctionHorner(s, table_size, table_size - 1);
-//     }
-// };
-//
-// struct HashFunction2 
-// {
-//     int operator()(const std::string& s, const size_t table_size) const
-//     {
-//         return HashFunctionHorner(s, table_size, table_size + 1);
-//     }
-// };
 
 size_t generateRandLong()
 { //генератор большого(12 цифрового) ключа для хеш-функции
@@ -66,6 +70,7 @@ struct Data
     Data(const std::string& a, const size_t b, const bool c)
     { // конструктор Data
         // strncpy(name, a, 10);
+        name = a;
         amount_of_students = b;
         turnstiles = c;
     }
@@ -106,18 +111,41 @@ struct LinkedList
         }
     }
 };
+size_t HashFunctionHorner(const string& s, const size_t& table_size, const size_t& key)
+{
+    size_t hash_result = 0;
+    for (size_t i = 0; s[i] != s.size(); ++i)
+        hash_result = (key * hash_result + s[i]) % table_size;
+    
+    hash_result = (hash_result * 2 + 1) % table_size;
+    return hash_result;
+}
+struct HashFunction1
+{
+    auto operator()(const std::string& s, const size_t table_size) const
+    {
+        return HashFunctionHorner(s, table_size, table_size - 1);
+    }
+};
+struct HashFunction2 
+{
+    auto operator()(const std::string& s, const size_t table_size) const
+    {
+        return HashFunctionHorner(s, table_size, table_size + 1);
+    }
+};
 
+template<class Hash1 = HashFunction1, class Hash2 = HashFunction2>
 struct HashTable2
 { //сама хеш-таблица
 public:
     void insert(const size_t key, const Data& value) // добавление элемента в таблицу
     {
-        
         if (load_factor_ < static_cast<float>(real_size_) / static_cast<float>(m_))
         {
             m_ *= alpha_;
             auto* NewbucketsArray = new LinkedList[m_];
-            for (int i = 0; i < m_ / alpha_; i++)
+            for (size_t i = 0; i < m_ / alpha_; i++)
                 NewbucketsArray[i] = buckets_array_[i];
             
             delete[] buckets_array_;
@@ -138,6 +166,24 @@ public:
         buckets_array_[index].push_back(value, key);
         
         real_size_++;
+    }
+    void rehash()
+    {
+        size_all_non_nullptr_ = 0;
+        size_ = 0;
+        Node** arr2 = new Node * [buffer_size_];
+        for (size_t i = 0; i < buffer_size_; ++i)
+            arr2[i] = nullptr;
+        std::swap(arr_, arr2);
+        for (size_t i = 0; i < buffer_size_; ++i)
+            if (arr2[i] && arr2[i]->state)
+                Add(arr2[i]->value);
+
+        for (size_t i = 0; i < buffer_size_; ++i)
+            if (arr2[i])
+                delete arr2[i];
+
+        delete[] arr2;
     }
 
     [[nodiscard]] Data* find(const size_t key) const
@@ -165,7 +211,7 @@ public:
         if(const auto index = hash(key); buckets_array_[index].head == nullptr)
         {
             //cout << "There is no such an element in the list" << endl;
-            const Data a("\0", 0, false);
+            Data a("\0", 0, false);
             return a;
         }
         else
@@ -175,14 +221,14 @@ public:
                 if (temp_node->next == nullptr)
                 {
                     buckets_array_[index].head = nullptr;
-                    const Data a = temp_node->data;
+                    Data a = temp_node->data;
                     delete temp_node;
                     real_size_--;
                     return a;
                 }
                 
                 buckets_array_[index].head = buckets_array_[index].head->next;
-                const Data a = temp_node->data;
+                Data a = temp_node->data;
                 delete temp_node;
                 real_size_--;
                 return a;
@@ -201,12 +247,12 @@ public:
             if (current_node == nullptr)
             {
                 //cout << "There is no such an element with such a key" << endl;
-                const Data a("\0", 0, 0);
+                Data a("\0", 0, 0);
                 return a;
             }
             prev_node->next = current_node->next;
             real_size_--;
-            const Data a = current_node->data;
+            Data a = current_node->data;
             delete current_node;
             return a;
         }
@@ -226,23 +272,25 @@ private:
     }
     size_t m_ = 8;
     LinkedList* buckets_array_ = new LinkedList[m_];
-    
+
+    size_t size_{0};
+    size_t size_all_non_nullptr_{0};
     int alpha_ = 2;
     size_t real_size_ = 0;
     float load_factor_ = 3;
 };
 
-
-
+//
+//
 bool testHashTable() // сравнение моей таблицы с unordered_map
 {
     constexpr size_t iters = 500000;
     constexpr size_t keys_amount = iters * 1;
     // generate random keys:
     const auto keys = new size_t[keys_amount];
-    auto* keys_to_insert = new size_t[iters];
-    auto* keys_to_erase = new size_t[iters];
-    auto* keys_to_find = new size_t[iters];
+    auto* keys_to_insert = new std::string[iters];
+    auto* keys_to_erase = new std::string[iters];
+    auto* keys_to_find = new std::string[iters];
     for (size_t i = 0; i < keys_amount; i++)
         keys[i] = generateRandLong();
     
@@ -253,14 +301,14 @@ bool testHashTable() // сравнение моей таблицы с unordered_
         keys_to_find[i] = keys[generateRandLong() % keys_amount];
     }
     // test my HashTable:
-    HashTable2 hash_table;
+    HashTable hash_table;
     const clock_t my_start = clock();
     for (size_t i = 0; i < iters; i++)
-        hash_table.insert(keys_to_insert[i], Data());
+        hash_table.add(keys_to_insert[i]);
 
     const auto my_insert_size = hash_table.size();
     for (size_t i = 0; i < iters; i++)
-        hash_table.erase(keys_to_erase[i]);
+        hash_table.remove(keys_to_erase[i]);
 
     const auto my_erase_size = hash_table.size();
     size_t my_found_amount = 0;
@@ -305,14 +353,16 @@ bool testHashTable() // сравнение моей таблицы с unordered_
     cerr << ":(" << endl;
     return false;
 }
-
-
+//
+//
 
 int main()
 {
     srand(static_cast<unsigned>(time(nullptr)));
+
     
-    testHashTable();
+    
+    // testHashTable();
     // HashTable<std::string> h;
     // Data d;
     // h.Add("123");
@@ -332,5 +382,11 @@ int main()
     // Data* dd;
     // dd = h.find(5);
     // cout << dd->name;
+    HashTable h;
+    h.add("123");
+    h.add("512");
+    h.add("546");
+    h.add("243");
+    std::cout << h.find("123");
     return 0;
 }
