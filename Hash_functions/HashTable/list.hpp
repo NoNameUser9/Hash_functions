@@ -1,7 +1,5 @@
 ﻿#pragma once
-// #include <initializer_list>
 #include <iostream>
-
 #include "node.hpp"
 
 template<class T>
@@ -43,6 +41,22 @@ public:
         std::cout << "\n";
     }
 
+    void print_by_key(const size_t& key)
+    {
+        auto temp = head_;
+        std::cout << temp->data.value;
+        temp = temp->next;
+        while (temp != nullptr)
+        {
+            if (temp->data.key == key)
+                std::cout << "-->[" << temp->data.value << "]";
+            else
+                std::cout << "-->" << temp->data.value;
+            temp = temp->next;
+        }
+        std::cout << "\n";
+    }
+
     void remove(const size_t& idx)
     {
         auto temp = head_;
@@ -69,9 +83,8 @@ public:
         }
     }
 
-    size_t size()
+    [[nodiscard]] size_t size() const
     {
-        // auto s = size_;
         return size_;
     }
 
