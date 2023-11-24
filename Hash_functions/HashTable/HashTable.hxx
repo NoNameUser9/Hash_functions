@@ -5,7 +5,7 @@
 #include <vector>
 
 // #include "node.h"
-#include "list.hpp"
+#include "list.hxx"
 
 template<class T>
 class HashTable
@@ -49,6 +49,11 @@ public:
         insert_without_test(key, value);
     }
 
+    /**
+     * \param key 
+     * \return
+     * \note debugging tool
+     */
     [[nodiscard]] auto find_debug(const size_t& key) const
     {
         auto h = hash(key, size_);
@@ -71,11 +76,12 @@ public:
                 if (items_[h]->operator[](i).key == key)
                     return items_[h]->operator[](i).value;
         }
-        
-        return static_cast<T>(0);
+
+        throw std::runtime_error("\nnullptr error!\n");   
+        // return static_cast<T>(0);
     }
 
-    [[nodiscard]] bucket* find_list(const size_t& key) const
+    [[nodiscard]] bucket* find_bucket(const size_t& key) const
     {
         auto h = hash(key, size_);
         if(items_[h] != nullptr)
@@ -118,17 +124,19 @@ public:
     
     bool remove(const size_t& key)
     {
-        auto h = hash(key);
+        auto h = hash(key, size_);
 
         if (items_[h] != nullptr)
         {
-            if (items_[h]->size_ > 1)
+            if (items_[h]->size() > 1)
+            {
                 for (size_t i = 0; i < items_[h]->size(); ++i)
                     if (items_[h]->operator[](i).key == key)
                     {
                         items_[h]->remove(i);
                         --size_all_elements_;
                     }
+            }
             else
             {
                 delete items_[h];

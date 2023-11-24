@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "pair.hpp"
+#include "pair.hxx"
 template<class T>
 struct node
 {

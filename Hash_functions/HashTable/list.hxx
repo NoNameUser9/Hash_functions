@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <iostream>
-#include "node.hpp"
+#include "node.hxx"
 
 template<class T>
 class list

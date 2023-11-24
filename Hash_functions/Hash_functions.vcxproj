@@ -11,13 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HashTable\HashTable.hpp" />
-    <ClInclude Include="HashTable\list.hpp" />
-    <ClInclude Include="HashTable\node.hpp" />
-    <ClInclude Include="HashTable\pair.hpp" />
+    <ClInclude Include="HashTable\HashTable.hxx" />
+    <ClInclude Include="HashTable\list.hxx" />
+    <ClInclude Include="HashTable\node.hxx" />
+    <ClInclude Include="HashTable\pair.hxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.c++" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
