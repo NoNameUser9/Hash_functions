@@ -8,14 +8,14 @@ int main()
 {
     srand(static_cast<unsigned>(time(nullptr)));
 
-    typedef double my_type;
+    using my_type = string;
     HashTable<my_type> h;
-    constexpr size_t size = 15 * 1 << 12;
+    constexpr size_t size = 5 * 1 << 12;
     size_t keys[size];
     my_type values[size];
     for (size_t i = 0; i < size; ++i)
     {
-        keys[i] = rand() % size;
+        keys[i] = i;
         values[i] = rand();
         h.insert(keys[i], values[i]);
     }

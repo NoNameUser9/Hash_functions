@@ -8,14 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="494398e0-64e3-4bd5-9b16-acf80c42ab1e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Hash_functions/.idea/dictionaries/User.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Hash_functions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hash_functions/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/HashTable/HashTable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/HashTable/HashTable.hxx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/HashTable/list.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/HashTable/list.hxx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/HashTable/node.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/HashTable/node.hxx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/HashTable/pair.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/HashTable/pair.hxx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/Hash_functions.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/Hash_functions.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hash_functions/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/main.c++" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hash_functions/main.c++" beforeDir="false" afterPath="$PROJECT_DIR$/Hash_functions/main.c++" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +112,7 @@
       <workItem from="1700756241558" duration="1990000" />
       <workItem from="1700758388962" duration="49000" />
       <workItem from="1700852654150" duration="4777000" />
+      <workItem from="1705680662827" duration="52000" />
     </task>
     <servers />
   </component>
